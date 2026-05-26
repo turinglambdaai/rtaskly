@@ -2,7 +2,7 @@
   <h1>Taskly</h1>
   <p>A Simple and Intuitive Task Manager Built with Racket</p>
 
-  <p>[English](README.md) | [中文](README.zh-CN.md)</p>
+  <p><a href="README.md">English</a> | <a href="README.zh-CN.md">中文</a></p>
 </div>
 
 ## Table of Contents

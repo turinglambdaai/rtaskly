@@ -2,7 +2,7 @@
   <h1>Taskly</h1>
   <p>一个使用 Racket 构建的简单直观的任务管理工具</p>
 
-  <p>[English](README.md) | [中文](README.zh-CN.md)</p>
+  <p><a href="README.md">English</a> | <a href="README.zh-CN.md">中文</a></p>
 </div>
 
 ## 目录
