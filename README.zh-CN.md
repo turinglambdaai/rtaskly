@@ -1,9 +1,8 @@
 <div align="center">
   <h1>Taskly</h1>
-  <p>📝 一个使用 Racket 构建的简单直观的任务管理工具</p>
-  
-  <a href="README.md"><img src="https://img.shields.io/badge/Language-English-gray.svg" alt="English"></a>
-  <a href="README.zh-CN.md"><img src="https://img.shields.io/badge/%E8%AF%AD%E8%A8%80-%E4%B8%AD%E6%96%87-blue.svg" alt="中文"></a>
+  <p>一个使用 Racket 构建的简单直观的任务管理工具</p>
+
+  <p>[English](README.md) | [中文](README.zh-CN.md)</p>
 </div>
 
 ## 目录
@@ -54,8 +53,8 @@ Taskly 是一个使用 Racket 构建的简单直观的任务管理工具。它�
 
 1. **克隆仓库**
    ```bash
-   git clone https://github.com/jrtxio/taskly.git
-   cd taskly
+   git clone https://github.com/jrtxio/rtaskly.git
+   cd rtaskly
    ```
 
 2. **构建应用程序**
@@ -212,5 +211,5 @@ Taskly 采用 MIT 许可证。详情请参阅 [LICENSE](LICENSE) 文件。
 ---
 
 <div align="center">
-  <p>使用 Racket 构建 ❤️</p>
+  <p>使用 Racket 构建</p>
 </div>
