@@ -1,4 +1,6 @@
 <div align="center">
+
+[![Language](https://img.shields.io/badge/language-Racket-red)] [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
   <h1>Taskly</h1>
   <p>A Simple and Intuitive Task Manager Built with Racket</p>
 
