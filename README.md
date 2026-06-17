@@ -4,7 +4,7 @@
   <h1>Taskly</h1>
   <p>A Simple and Intuitive Task Manager Built with Racket</p>
 
-  <p><a href="README.md">English</a> | <a href="README.zh-CN.md">中文</a></p>
+  <p>[![English](https://img.shields.io/badge/lang-English-blue)](README.md) [![中文](https://img.shields.io/badge/lang-中文-red)](README.zh-CN.md)</p>
 </div>
 
 ## Table of Contents
