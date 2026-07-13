@@ -1,37 +1,14 @@
-<div align="center">
-  <h1>Taskly</h1>
-  <p>一个使用 Racket 构建的简单直观的任务管理工具</p>
+# Taskly
 
-  <p><a href="README.md">English</a> | <a href="README.zh-CN.md">中文</a></p>
-</div>
+一个使用 Racket 构建的简单直观的任务管理工具。它提供了一个干净的图形界面，用于高效地创建、组织和跟踪任务，无论您是管理个人待办事项还是团队项目。
 
-## 目录
+对于最终用户文档，请访问 [GitHub Pages](https://turinglambdaai.github.io/rtaskly) 站点。
 
-- [关于](#关于)
-- [特性](#特性)
-- [快速开始](#快速开始)
-  - [前提条件](#前提条件)
-  - [安装](#安装)
-  - [运行应用](#运行应用)
-- [技术架构](#技术架构)
-  - [模块化设计](#模块化设计)
-  - [数据流](#数据流)
-  - [数据库架构](#数据库架构)
-- [开发](#开发)
-  - [运行测试](#运行测试)
-  - [代码结构](#代码结构)
-  - [调试技巧](#调试技巧)
-- [贡献](#贡献)
-- [部署与发布](#部署与发布)
-- [许可证](#许可证)
+![Racket](https://img.shields.io/badge/Racket-9F1D20?logo=racket&logoColor=white) [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-## 关于
+[English](README.md) · **中文**
 
-Taskly 是一个使用 Racket 构建的简单直观的任务管理工具。它提供了一个干净的图形界面，用于高效地创建、组织和跟踪任务。无论您是管理个人待办事项还是团队项目，Taskly 都能帮助您保持组织性和专注力。
-
-对于最终用户文档，请访问我们的 [GitHub Pages](https://jrtxio.github.io/rtaskly)。
-
-## 特性
+## 功能特性
 
 - ✅ 轻松创建、编辑和删除任务
 - 📋 将任务组织到自定义列表中
@@ -42,18 +19,18 @@ Taskly 是一个使用 Racket 构建的简单直观的任务管理工具。它�
 - 🎨 简单干净的用户界面
 - 🌍 多语言支持
 
-## 快速开始
-
-### 前提条件
+## 环境要求
 
 - Racket 8.0 或更高版本
 - Git
+
+## 快速开始
 
 ### 安装
 
 1. **克隆仓库**
    ```bash
-   git clone https://github.com/jrtxio/rtaskly.git
+   git clone https://github.com/turinglambdaai/rtaskly.git
    cd rtaskly
    ```
 
@@ -79,23 +56,23 @@ racket src/taskly.rkt
 
 Taskly 采用模块化架构，职责分明：
 
-- **core/**：核心功能，包括任务管理、列表管理和数据库操作
+- **core/** —— 核心功能，包括任务管理、列表管理和数据库操作
   - `database.rkt`：SQLite 数据库操作和架构管理
   - `list.rkt`：任务列表管理（CRUD 操作）
   - `task.rkt`：任务管理（CRUD 操作、截止日期处理）
-  
-- **gui/**：使用 Racket GUI 工具包构建的图形用户界面组件
+
+- **gui/** —— 使用 Racket GUI 工具包构建的图形用户界面组件
   - `main-frame.rkt`：主应用窗口和布局
   - `sidebar.rkt`：带有列表导航的侧边栏
   - `task-panel.rkt`：任务显示和管理面板
   - `dialogs.rkt`：用于任务和列表操作的对话框
   - `language.rkt`：多语言支持
-  
-- **utils/**：用于各种操作的工具函数
+
+- **utils/** —— 用于各种操作的工具函数
   - `date.rkt`：日期和时间处理，包括智能快捷方式解析
   - `path.rkt`：文件路径管理和数据库文件处理
-  
-- **tests/**：全面的测试套件
+
+- **tests/** —— 全面的测试套件
   - 核心功能的单元测试
   - 端到端工作流的集成测试
   - 边缘情况测试
@@ -206,10 +183,4 @@ racket tests/test-list.rkt
 
 ## 许可证
 
-Taskly 采用 MIT 许可证。详情请参阅 [LICENSE](LICENSE) 文件。
-
----
-
-<div align="center">
-  <p>使用 Racket 构建</p>
-</div>
+基于 [MIT License](LICENSE) 开源。

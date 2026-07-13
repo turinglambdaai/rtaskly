@@ -1,37 +1,12 @@
-<div align="center">
+# Taskly
 
-[![Language](https://img.shields.io/badge/language-Racket-red)] [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
-  <h1>Taskly</h1>
-  <p>A Simple and Intuitive Task Manager Built with Racket</p>
+A simple and intuitive task manager built with Racket. It provides a clean graphical interface for efficiently creating, organizing, and tracking tasks, whether you're managing personal to-dos or team projects.
 
-  <p>[![English](https://img.shields.io/badge/lang-English-blue)](README.md) [![中文](https://img.shields.io/badge/lang-中文-red)](README.zh-CN.md)</p>
-</div>
+For end-user documentation, please visit the [GitHub Pages](https://turinglambdaai.github.io/rtaskly) site.
 
-## Table of Contents
+![Racket](https://img.shields.io/badge/Racket-9F1D20?logo=racket&logoColor=white) [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-- [About](#about)
-- [Features](#features)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-  - [Running the Application](#running-the-application)
-- [Technical Architecture](#technical-architecture)
-  - [Modular Design](#modular-design)
-  - [Data Flow](#data-flow)
-  - [Database Schema](#database-schema)
-- [Development](#development)
-  - [Running Tests](#running-tests)
-  - [Code Structure](#code-structure)
-  - [Debugging Tips](#debugging-tips)
-- [Contributing](#contributing)
-- [Deployment and Release](#deployment-and-release)
-- [License](#license)
-
-## About
-
-Taskly is a simple and intuitive task management tool built with Racket. It provides a clean graphical interface for efficiently creating, organizing, and tracking tasks. Whether you're managing personal to-dos or team projects, Taskly helps you stay organized and focused.
-
-For end-user documentation, please visit our [GitHub Pages](https://jrtxio.github.io/rtaskly).
+**English** · [中文](README.zh-CN.md)
 
 ## Features
 
@@ -44,18 +19,18 @@ For end-user documentation, please visit our [GitHub Pages](https://jrtxio.githu
 - 🎨 Simple and clean user interface
 - 🌍 Multi-language support
 
-## Getting Started
-
-### Prerequisites
+## Requirements
 
 - Racket 8.0 or later
 - Git
+
+## Quick Start
 
 ### Installation
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/jrtxio/rtaskly.git
+   git clone https://github.com/turinglambdaai/rtaskly.git
    cd rtaskly
    ```
 
@@ -81,23 +56,23 @@ racket src/taskly.rkt
 
 Taskly follows a modular architecture with clear separation of concerns:
 
-- **core/**: Core functionality including task management, list management, and database operations
+- **core/** — core functionality including task management, list management, and database operations
   - `database.rkt`: SQLite database operations and schema management
   - `list.rkt`: Task list management (CRUD operations)
   - `task.rkt`: Task management (CRUD operations, due date handling)
-  
-- **gui/**: Graphical user interface components built with Racket GUI toolkit
+
+- **gui/** — graphical user interface components built with Racket GUI toolkit
   - `main-frame.rkt`: Main application window and layout
   - `sidebar.rkt`: Sidebar with list navigation
   - `task-panel.rkt`: Task display and management panel
   - `dialogs.rkt`: Dialog boxes for task and list operations
   - `language.rkt`: Multi-language support
-  
-- **utils/**: Utility functions for various operations
+
+- **utils/** — utility functions for various operations
   - `date.rkt`: Date and time handling, including smart shortcut parsing
   - `path.rkt`: File path management and database file handling
-  
-- **tests/**: Comprehensive test suite
+
+- **tests/** — comprehensive test suite
   - Unit tests for core functionality
   - Integration tests for end-to-end workflows
   - Edge case testing
@@ -208,10 +183,4 @@ Contributions are welcome! Whether you're reporting bugs, suggesting new feature
 
 ## License
 
-Taskly is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
----
-
-<div align="center">
-  <p>Built with Racket</p>
-</div>
+Released under the [MIT License](LICENSE).
