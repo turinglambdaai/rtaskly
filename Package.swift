@@ -7,7 +7,7 @@
 //
 //   make                                 # produces Taskly/res/core.zo
 //   swift build -c release               # builds the SwiftUI app
-//   open .build/release/Taskly.app       # (or run the binary directly)
+//   .build/release/Taskly                # run it (SPM yields a binary, not a .app)
 //
 // Noise is expected as a sibling directory at ../Noise, with its SwiftPM
 // package under ../Noise/SwiftNoise (the same layout as the Noise repo).
