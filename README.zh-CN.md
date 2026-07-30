@@ -4,47 +4,52 @@
 
 对于最终用户文档，请访问 [GitHub Pages](https://turinglambdaai.github.io/rtaskly) 站点。
 
-![Racket](https://img.shields.io/badge/Racket-9F1D20?logo=racket&logoColor=white) [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+![Racket](https://img.shields.io/badge/Racket-9F1D20?logo=racket&logoColor=white) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 [English](README.md) · **中文**
 
 ## 功能特性
 
-- ✅ 轻松创建、编辑和删除任务
-- 📋 将任务组织到自定义列表中
-- 📅 使用智能快捷方式设置截止日期（例如，"明天"、"下周"）
-- 🎯 标记任务为完成并获得视觉反馈
-- 💾 使用 SQLite 自动持久化数据
-- 🌐 跨平台兼容（Windows、macOS、Linux）
-- 🎨 简单干净的用户界面
-- 🌍 多语言支持
+- **任务管理** —— 轻松创建、编辑和删除任务
+- **可组织列表** —— 将任务分组到自定义列表中
+- **智能截止日期** —— 使用自然语言快捷方式设置截止日期（例如，"明天"、"下周"）
+- **可视化完成** —— 标记任务为完成并获得视觉反馈
+- **自动持久化** —— 数据使用 SQLite 存储
+- **跨平台** —— 运行于 Windows、macOS 和 Linux
+- **清爽界面** —— 简洁无杂乱的界面
+- **多语言** —— 支持国际化
 
 ## 环境要求
 
-- Racket 8.0 或更高版本
-- Git
+| 依赖 | 用途 / 版本 |
+|------|------------|
+| Racket | 8.0 或更高版本 |
+| Git | 版本控制 |
 
 ## 快速开始
 
-### 安装
+### 1. 克隆仓库
 
-1. **克隆仓库**
-   ```bash
-   git clone https://github.com/turinglambdaai/rtaskly.git
-   cd rtaskly
-   ```
+```bash
+git clone https://github.com/turinglambdaai/rtaskly.git
+cd rtaskly
+```
 
-2. **构建应用程序**
-   - 在 Windows 上：
-     ```powershell
-     ./build.ps1
-     ```
-   - 在 macOS/Linux 上：
-     ```bash
-     ./build.sh
-     ```
+### 2. 构建
 
-### 运行应用
+- 在 Windows 上：
+
+  ```powershell
+  ./build.ps1
+  ```
+
+- 在 macOS/Linux 上：
+
+  ```bash
+  ./build.sh
+  ```
+
+### 3. 运行
 
 ```bash
 racket src/taskly.rkt
@@ -125,13 +130,6 @@ racket tests/test-task.rkt
 racket tests/test-list.rkt
 ```
 
-### 代码结构
-
-- 所有代码遵循 Racket 的风格指南
-- 模块设计为独立且可测试
-- 使用注释解释复杂逻辑
-- 尽可能遵循函数式编程原则
-
 ### 调试技巧
 
 - 对 GUI 应用程序使用 Racket 的内置调试器
@@ -143,8 +141,6 @@ racket tests/test-list.rkt
 
 欢迎贡献！无论您是报告错误、提出新功能建议还是提交代码更改，我们都非常感谢您的帮助。
 
-### 贡献工作流程
-
 1. Fork 仓库
 2. 创建功能分支 (`git checkout -b feature/your-feature`)
 3. 进行更改
@@ -153,33 +149,25 @@ racket tests/test-list.rkt
 6. 推送到分支 (`git push origin feature/your-feature`)
 7. 打开拉取请求
 
-### 代码审查指南
-
-- 所有更改必须通过测试套件
-- 代码必须遵循项目的风格指南
-- 更改应集中且最小化
-- 为新功能添加测试
-- 编写清晰的提交消息
-
 ## 部署与发布
 
-### 构建流程
+- 构建过程编译应用程序并在 `dist/` 目录中准备分发包
+- 通过 GitHub Releases 管理发布，遵循语义化版本控制（MAJOR.MINOR.PATCH）
+- GitHub Actions 在每次推送到主分支时运行测试，并自动部署 GitHub Pages
 
-1. 为您的平台运行适当的构建脚本
-2. 构建过程编译应用程序并准备分发包
-3. 分发包在 `dist/` 目录中生成
+## 项目结构
 
-### 发布管理
-
-- 通过 GitHub Releases 管理发布
-- 版本号遵循语义化版本控制（MAJOR.MINOR.PATCH）
-- 发布说明从提交消息生成
-
-### CI/CD 配置
-
-- 使用 GitHub Actions 进行持续集成
-- 每次推送到主分支时运行测试
-- 每次推送到主分支时自动部署 GitHub Pages
+```
+rtaskly/
+├── src/
+│   ├── taskly.rkt           # 应用入口
+│   ├── core/                # 任务/列表管理和数据库操作
+│   ├── gui/                 # GUI 组件（Racket GUI 工具包）
+│   └── utils/               # 工具函数（日期、路径处理）
+├── tests/                   # 全面的测试套件
+├── build.sh                 # 构建脚本（macOS/Linux）
+└── build.ps1                # 构建脚本（Windows）
+```
 
 ## 许可证
 

@@ -4,47 +4,52 @@ A simple and intuitive task manager built with Racket. It provides a clean graph
 
 For end-user documentation, please visit the [GitHub Pages](https://turinglambdaai.github.io/rtaskly) site.
 
-![Racket](https://img.shields.io/badge/Racket-9F1D20?logo=racket&logoColor=white) [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+![Racket](https://img.shields.io/badge/Racket-9F1D20?logo=racket&logoColor=white) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 **English** · [中文](README.zh-CN.md)
 
 ## Features
 
-- ✅ Create, edit, and delete tasks with ease
-- 📋 Organize tasks into customizable lists
-- 📅 Set due dates with smart shortcuts (e.g., "tomorrow", "next week")
-- 🎯 Mark tasks as complete with visual feedback
-- 💾 Automatic data persistence using SQLite
-- 🌐 Cross-platform compatibility (Windows, macOS, Linux)
-- 🎨 Simple and clean user interface
-- 🌍 Multi-language support
+- **Task management** — create, edit, and delete tasks with ease
+- **Organizable lists** — group tasks into customizable lists
+- **Smart due dates** — set due dates with natural shortcuts (e.g., "tomorrow", "next week")
+- **Visual completion** — mark tasks as complete with visual feedback
+- **Automatic persistence** — data is stored using SQLite
+- **Cross-platform** — runs on Windows, macOS, and Linux
+- **Clean UI** — simple and uncluttered interface
+- **Multi-language** — internationalization support
 
 ## Requirements
 
-- Racket 8.0 or later
-- Git
+| Dependency | Purpose / Version |
+|------------|-------------------|
+| Racket | 8.0 or later |
+| Git | Source control |
 
 ## Quick Start
 
-### Installation
+### 1. Clone
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/turinglambdaai/rtaskly.git
-   cd rtaskly
-   ```
+```bash
+git clone https://github.com/turinglambdaai/rtaskly.git
+cd rtaskly
+```
 
-2. **Build the application**
-   - On Windows:
-     ```powershell
-     ./build.ps1
-     ```
-   - On macOS/Linux:
-     ```bash
-     ./build.sh
-     ```
+### 2. Build
 
-### Running the Application
+- On Windows:
+
+  ```powershell
+  ./build.ps1
+  ```
+
+- On macOS/Linux:
+
+  ```bash
+  ./build.sh
+  ```
+
+### 3. Run
 
 ```bash
 racket src/taskly.rkt
@@ -125,13 +130,6 @@ racket tests/test-task.rkt
 racket tests/test-list.rkt
 ```
 
-### Code Structure
-
-- All code follows Racket's style guide
-- Modules are designed to be independent and testable
-- Comments are used to explain complex logic
-- Follow functional programming principles where appropriate
-
 ### Debugging Tips
 
 - Use Racket's built-in debugger for GUI applications
@@ -143,8 +141,6 @@ racket tests/test-list.rkt
 
 Contributions are welcome! Whether you're reporting bugs, suggesting new features, or submitting code changes, we appreciate your help.
 
-### Contribution Workflow
-
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/your-feature`)
 3. Make your changes
@@ -153,34 +149,26 @@ Contributions are welcome! Whether you're reporting bugs, suggesting new feature
 6. Push to the branch (`git push origin feature/your-feature`)
 7. Open a pull request
 
-### Code Review Guidelines
-
-- All changes must pass the test suite
-- Code must follow the project's style guide
-- Changes should be focused and minimal
-- Add tests for new functionality
-- Write clear commit messages
-
 ## Deployment and Release
 
-### Build Process
+- Build process compiles the application and prepares distribution packages in the `dist/` directory
+- Releases are managed through GitHub Releases and follow semantic versioning (MAJOR.MINOR.PATCH)
+- GitHub Actions run tests on every push to the main branch and auto-deploy GitHub Pages
 
-1. Run the appropriate build script for your platform
-2. The build process compiles the application and prepares distribution packages
-3. Distribution packages are generated in the `dist/` directory
+## Project Structure
 
-### Release Management
-
-- Releases are managed through GitHub Releases
-- Version numbers follow semantic versioning (MAJOR.MINOR.PATCH)
-- Release notes are generated from commit messages
-
-### CI/CD Configuration
-
-- GitHub Actions are used for continuous integration
-- Tests are run on every push to the main branch
-- GitHub Pages are automatically deployed on every push to the main branch
+```
+rtaskly/
+├── src/
+│   ├── taskly.rkt           # Application entry point
+│   ├── core/                # Task/list management and database operations
+│   ├── gui/                 # GUI components (Racket GUI toolkit)
+│   └── utils/               # Utilities (date, path handling)
+├── tests/                   # Comprehensive test suite
+├── build.sh                 # Build script (macOS/Linux)
+└── build.ps1                # Build script (Windows)
+```
 
 ## License
 
-Released under the [MIT License](LICENSE).
+Licensed under the [MIT License](LICENSE).
