@@ -1,117 +1,126 @@
 # Taskly
 
-A simple and intuitive task manager built with Racket. It provides a clean graphical interface for efficiently creating, organizing, and tracking tasks, whether you're managing personal to-dos or team projects.
+A simple and intuitive task manager built with **Noise** — it embeds a Racket backend inside a native macOS (SwiftUI) app. The backend owns the SQLite database and exposes every operation as a typed RPC; the frontend calls them over a pipe, so the UI stays responsive while all task logic runs in the background.
 
-For end-user documentation, please visit the [GitHub Pages](https://turinglambdaai.github.io/rtaskly) site.
+Taskly provides a clean graphical interface — modeled on macOS Reminders — for efficiently creating, organizing, and tracking tasks, whether you're managing personal to-dos or team projects.
 
-![Racket](https://img.shields.io/badge/Racket-9F1D20?logo=racket&logoColor=white) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+![SwiftUI](https://img.shields.io/badge/SwiftUI-2396F3?logo=swift&logoColor=white) ![Racket](https://img.shields.io/badge/Racket-9F1D20?logo=racket&logoColor=white) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 **English** · [中文](README.zh-CN.md)
 
 ## Features
 
 - **Task management** — create, edit, and delete tasks with ease
-- **Organizable lists** — group tasks into customizable lists
-- **Smart due dates** — set due dates with natural shortcuts (e.g., "tomorrow", "next week")
-- **Visual completion** — mark tasks as complete with visual feedback
-- **Automatic persistence** — data is stored using SQLite
-- **Cross-platform** — runs on Windows, macOS, and Linux
-- **Clean UI** — simple and uncluttered interface
-- **Multi-language** — internationalization support
+- **Organizable lists** — group tasks into customizable lists (Work / Personal seeded by default)
+- **Smart due dates** — set due dates with shortcuts: `+1d`, `@10am`, `@10am tomorrow`, `2025-08-07`
+- **Visual completion** — mark tasks as complete with strikethrough + dimmed styling
+- **Smart views** — Today / Scheduled / All / Completed, each with its own colored list icon
+- **Automatic persistence** — data is stored locally using SQLite
+- **Native macOS** — a real SwiftUI app with a Reminders-style sidebar and list pane
+- **Multi-language** — Chinese / English, switchable from the menu bar
 
 ## Requirements
 
 | Dependency | Purpose / Version |
 |------------|-------------------|
-| Racket | 8.0 or later |
-| Git | Source control |
+| Racket | 9.x CS — to compile the backend |
+| [Noise](https://github.com/turinglambdaai/Noise) | the Swift↔Racket bridge (checked out as a sibling) |
+| Xcode | Swift 6 / macOS 14 SDK |
 
 ## Quick Start
 
-### 1. Clone
+### 1. Clone (with Noise as a sibling)
 
 ```bash
 git clone https://github.com/turinglambdaai/rtaskly.git
 cd rtaskly
+git clone https://github.com/turinglambdaai/Noise.git ../Noise
+cd ../Noise && git lfs install && git lfs pull && cd ../rtaskly
+make -C ../Noise/SwiftNoise        # build the RacketCS xcframeworks
+raco pkg install --auto ../Noise/Racket/noise-serde-lib
 ```
 
 ### 2. Build
 
-- On Windows:
+```bash
+make          # compiles res/core.zo and regenerates Backend.swift
+swift build   # builds the macOS app
+```
 
-  ```powershell
-  ./build.ps1
-  ```
+Or the one-shot helper:
 
-- On macOS/Linux:
-
-  ```bash
-  ./build.sh
-  ```
+```bash
+./bin/build --release
+```
 
 ### 3. Run
 
 ```bash
-racket src/taskly.rkt
+.build/debug/Taskly
 ```
+
+> Rerun `make` whenever you change any `taskly-core/*.rkt`, so both
+> `res/core.zo` and `Backend.swift` stay in sync.
 
 ## Technical Architecture
 
+Taskly is built on the **Noise** framework, which embeds the Racket CS runtime into Swift applications. The app is split into a Racket backend and a SwiftUI frontend that communicate over a pair of pipes with a typed binary protocol.
+
+### How the bridge works
+
+1. The Racket backend declares shared types (`define-record`) and operations (`define-rpc`) in `taskly-core/`; `main.rkt` boots Noise's `(serve in-fd out-fd)`.
+2. `make` compiles `main.rkt` into a self-contained `res/core.zo` (runtime + all module bytecode, including `db`/sqlite3) via `raco ctool`, and generates the Swift `Backend.swift` client via `raco noise-serde-codegen`.
+3. The app embeds `core.zo`; `Backend.shared` boots the Racket server on a background thread, and the UI calls `async throws` methods that marshal arguments over the pipes.
+
+The `db` library loads the system `libsqlite3` via FFI (bundled with macOS), so no extra native code ships with the app.
+
 ### Modular Design
 
-Taskly follows a modular architecture with clear separation of concerns:
+- **taskly-core/** — the Racket backend (Noise RPC server)
+  - `main.rkt`: entry point — `(main in-fd out-fd)` → `(serve ...)`
+  - `rpc.rkt`: every operation declared as a `define-rpc`
+  - `types.rkt`: shared serde records (`TaskItem`, `TodoList`)
+  - `database.rkt`: SQLite layer and schema management
+  - `task.rkt` / `list.rkt`: task and list business logic
+  - `date.rkt` / `path.rkt`: the date parser and `~/.taskly` paths
 
-- **core/** — core functionality including task management, list management, and database operations
-  - `database.rkt`: SQLite database operations and schema management
-  - `list.rkt`: Task list management (CRUD operations)
-  - `task.rkt`: Task management (CRUD operations, due date handling)
+- **Taskly/** — the SwiftUI macOS app
+  - `App/`: app entry, `AppStore` (`@Observable`), config, design tokens
+  - `Backend/`: the `Backend.shared` singleton
+  - `Views/`: main window, sidebar, task panel, dialogs
+  - `Languages/`: the Chinese / English string catalog
+  - `Backend.swift`: generated client — do not edit; run `make`
 
-- **gui/** — graphical user interface components built with Racket GUI toolkit
-  - `main-frame.rkt`: Main application window and layout
-  - `sidebar.rkt`: Sidebar with list navigation
-  - `task-panel.rkt`: Task display and management panel
-  - `dialogs.rkt`: Dialog boxes for task and list operations
-  - `language.rkt`: Multi-language support
-
-- **utils/** — utility functions for various operations
-  - `date.rkt`: Date and time handling, including smart shortcut parsing
-  - `path.rkt`: File path management and database file handling
-
-- **tests/** — comprehensive test suite
-  - Unit tests for core functionality
-  - Integration tests for end-to-end workflows
-  - Edge case testing
+- **tests/** — the backend test suite (date parsing, database CRUD, RPC surface)
 
 ### Data Flow
 
-1. User interacts with GUI components
-2. GUI events trigger core functionality calls
-3. Core functions perform database operations via SQLite
-4. Database changes are reflected in the GUI
-5. All data is automatically persisted
+1. The user interacts with the SwiftUI interface
+2. UI actions call async methods on `Backend.shared`
+3. Calls are marshaled over a pipe to the Racket server thread
+4. The backend performs SQLite operations and returns the result
+5. The UI re-renders via `@Observable`; all data is automatically persisted
 
 ### Database Schema
 
-Taskly uses SQLite for data persistence with a simple schema:
+Taskly uses SQLite with a simple schema:
 
 ```sql
--- Lists table
-CREATE TABLE IF NOT EXISTS lists (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    created_at TEXT NOT NULL
+-- Lists
+CREATE TABLE IF NOT EXISTS list (
+    list_id   INTEGER PRIMARY KEY AUTOINCREMENT,
+    list_name TEXT NOT NULL
 );
 
--- Tasks table
-CREATE TABLE IF NOT EXISTS tasks (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title TEXT NOT NULL,
-    description TEXT,
-    due_date TEXT,
-    completed INTEGER DEFAULT 0,
-    list_id INTEGER,
-    created_at TEXT NOT NULL,
-    FOREIGN KEY (list_id) REFERENCES lists(id)
+-- Tasks
+CREATE TABLE IF NOT EXISTS task (
+    task_id      INTEGER PRIMARY KEY AUTOINCREMENT,
+    list_id      INTEGER NOT NULL,
+    task_text    TEXT NOT NULL,
+    due_date     TEXT NULL,              -- "YYYY-MM-DD HH:MM" or NULL
+    is_completed INTEGER NOT NULL DEFAULT 0,
+    created_at   TEXT NOT NULL,          -- epoch seconds as string
+    FOREIGN KEY (list_id) REFERENCES list(list_id) ON DELETE CASCADE
 );
 ```
 
@@ -119,54 +128,37 @@ CREATE TABLE IF NOT EXISTS tasks (
 
 ### Running Tests
 
-Taskly has a comprehensive test suite to ensure functionality works as expected:
+The backend has a test suite covering the date parser, the database layer, and the RPC/serde surface:
 
 ```bash
-# Run all tests
-racket tests/run-all-tests.rkt
+# Run all backend tests
+raco test tests/
 
-# Run specific test files
-racket tests/test-task.rkt
-racket tests/test-list.rkt
+# Or via the entry point
+racket run-tests.rkt
 ```
-
-### Debugging Tips
-
-- Use Racket's built-in debugger for GUI applications
-- Enable verbose logging for database operations
-- Test core functionality in isolation before GUI integration
-- Use `displayln` for quick debugging output
-
-## Contributing
-
-Contributions are welcome! Whether you're reporting bugs, suggesting new features, or submitting code changes, we appreciate your help.
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/your-feature`)
-3. Make your changes
-4. Run the test suite to ensure everything works
-5. Commit your changes with a descriptive message
-6. Push to the branch (`git push origin feature/your-feature`)
-7. Open a pull request
-
-## Deployment and Release
-
-- Build process compiles the application and prepares distribution packages in the `dist/` directory
-- Releases are managed through GitHub Releases and follow semantic versioning (MAJOR.MINOR.PATCH)
-- GitHub Actions run tests on every push to the main branch and auto-deploy GitHub Pages
 
 ## Project Structure
 
 ```
 rtaskly/
-├── src/
-│   ├── taskly.rkt           # Application entry point
-│   ├── core/                # Task/list management and database operations
-│   ├── gui/                 # GUI components (Racket GUI toolkit)
-│   └── utils/               # Utilities (date, path handling)
-├── tests/                   # Comprehensive test suite
-├── build.sh                 # Build script (macOS/Linux)
-└── build.ps1                # Build script (Windows)
+├── taskly-core/            # Racket backend (Noise RPC server)
+│   ├── main.rkt            # entry point
+│   ├── rpc.rkt             # define-rpc surface
+│   ├── types.rkt           # shared serde records
+│   ├── database.rkt        # SQLite layer
+│   ├── task.rkt / list.rkt # business logic
+│   └── date.rkt / path.rkt # date parser + paths
+├── Taskly/                 # SwiftUI macOS app
+│   ├── App/                # entry, AppStore, config, design tokens
+│   ├── Backend/            # Backend.shared singleton
+│   ├── Views/              # window, sidebar, task panel, dialogs
+│   ├── Languages/          # zh / en strings
+│   └── Backend.swift       # GENERATED client
+├── tests/                  # backend test suite
+├── Makefile                # core.zo + Backend.swift pipeline
+├── Package.swift           # SPM project
+└── bin/                    # build / codegen helpers
 ```
 
 ## License

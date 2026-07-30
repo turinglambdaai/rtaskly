@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+#
+# Full build of Taskly: compiles the Racket backend into res/core.zo,
+# regenerates Backend.swift, then builds the SwiftUI macOS app.
+#
+# Usage: ./bin/build [-c|--release]
+#
+# Prerequisites:
+#   - Racket 9.x CS (https://racket-lang.org), with noise-serde-lib installed
+#   - the Noise repo checked out at ../Noise with `git lfs pull` run
+#   - Xcode command-line tools (for swift)
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+
+CONFIG="debug"
+if [[ "${1:-}" == "-c" || "${1:-}" == "--release" ]]; then
+  CONFIG="release"
+fi
+
+echo "==> [1/3] Compiling Racket backend -> Taskly/res/core.zo"
+make Taskly/res/core.zo
+
+echo "==> [2/3] Regenerating Taskly/Backend.swift"
+make Taskly/Backend.swift
+
+echo "==> [3/3] Building the macOS app ($CONFIG)"
+swift build -c "$CONFIG"
+
+echo
+echo "Done. App binary: .build/$CONFIG/Taskly"
